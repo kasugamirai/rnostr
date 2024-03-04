@@ -210,6 +210,16 @@ impl ArchivedEventIndex {
         (20_000..30_000).contains(&kind)
     }
 
+    pub fn is_burn_after_read(&self) -> bool {
+        let tags = self.tags();
+        for tag in tags.iter() {
+            if tag.0 == b"b" && tag.1 == b"burn_after_read" {
+                true
+            }
+        }
+        false
+    }
+
     pub fn is_expired(&self, now: u64) -> bool {
         if let Some(exp) = self.expiration.as_ref() {
             exp < &now
